@@ -1,35 +1,50 @@
 import React from 'react';
 import {MainPage, CartPage} from '../pages';
 import AppHeader from '../app-header';
-import WithRestoService from '../hoc';
 import Background from './food-bg.jpg';
-import {Route,Switch,Link} from 'react-router-dom';
-import {Button} from 'reactstrap';
+import {Route,Switch} from 'react-router-dom';
+import {ErrorPage404} from '../error';
+import MenuListItem from '../menu-list-item';
+import {connect} from 'react-redux';
 import styled from 'styled-components';
 
-const ErrorPage = styled.div`
+const ItemWrapper = styled.div`
     height:100vh;
     display:flex;
-    flex-direction:column;
-    align-items: center;
+    justify-content:center;
+    cursor:default;
+    *{
+        cursor:default;
+    }
 `
-const TextColor = styled.div`
-    color:white;
-    font-size: 20px;
-`
-const App = ({restoService}) => {
-    restoService.getListItem()
-        .then(menu=>console.log(menu))
-        .catch(error=> {
-            throw new Error (`${error}`)
-        });
 
+const App = ({menuItems}) => {
     return (
         <div style={{background: `url(${Background}) center center/cover no-repeat`}} className="app">
             <AppHeader total={50}/>
             <Switch>
                 <Route path='/' exact component={MainPage}/>
                 <Route path='/basket' exact component={CartPage}/>
+                <Route path="/:id" exact render={
+                    ({match})=>{
+                        const {id} = match.params;
+                        const currentItem =menuItems.filter(menuItem=>{
+                            if((menuItem.title.match(/\S/g)).join("").toLowerCase().includes(id) ){
+                                return menuItem;
+                            } 
+                            return "";
+                        });
+                        if(currentItem[0]){
+                            return (
+                                <MenuListItemWrapper currentItem={currentItem[0]}/>
+                            );
+                        } else {
+                            return(
+                                <ErrorPage404/>
+                            )
+                        }
+                    }
+                }/>
                 <Route render={()=>{
                     return(
                         <ErrorPage404/>
@@ -39,17 +54,17 @@ const App = ({restoService}) => {
         </div>
     )
 }
-const ErrorPage404 = ()=>{
-    return(
-        <ErrorPage>
-            <TextColor>404 Page Not Found</TextColor>
-            <Button>
-                <Link to="/">
-                    go to main page
-                </Link>
-            </Button>
-        </ErrorPage>
+
+const mapStateToProps = (state)=>{
+    return{
+        menuItems: state.menu
+    }
+}
+const MenuListItemWrapper=({currentItem})=>{
+    return (
+        <ItemWrapper>
+            <MenuListItem menu={currentItem}/>
+        </ItemWrapper>
     )
 }
-
-export default WithRestoService(App);
+export default connect(mapStateToProps)(App);

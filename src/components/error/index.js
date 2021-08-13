@@ -1,3 +1,6 @@
-import Error from './error';
+import {Error,ErrorPage404} from './error';
 
-export default Error;
+export {
+    Error,
+    ErrorPage404
+};

@@ -1,25 +1,41 @@
 import React from 'react';
 import './menu-list-item.scss';
+import {Link} from 'react-router-dom';
 
-const MenuListItem = () => {
+
+
+const MenuListItem = ({menu}) => {
+    const {title,url,category,price} = menu;
+    const newTitle = (title.match(/\S/g)).join("").toLowerCase();
+    let categoryImg = <></>;
+    switch(category){
+        case "salads":
+            categoryImg = <i className="fas fa-carrot"></i>;
+            break;
+        case "pizza":
+            categoryImg = <i className="fas fa-pizza-slice"></i>;
+            break;
+        case "meat":
+            categoryImg = <i className="fas fa-drumstick-bite"></i>;
+            break;
+        default:
+            categoryImg = <></>;
+    }
     return (
-        <>
+        
+        <Link style={{color:"black",textDecoration:"none",listStyle:"none"}} to={"/"+newTitle}>
             <li className="menu__item">
-                <div className="menu__title">Cesar salad</div>
-                <img className="menu__img" src="https://static.1000.menu/img/content/21458/-salat-cezar-s-kr-salat-cezar-s-krevetkami-s-maionezom_1501173720_1_max.jpg" alt="Cesar salad"></img>
-                <div className="menu__category">Category: <span>salads</span></div>
-                <div className="menu__price">Price: <span>12$</span></div>
+                <div className="menu__title">{title}</div>
+                <img className="menu__img" src={url} alt={title}></img>
+                <div className="menu__category">
+                    Category: <span>{category}</span>
+                    <br/>{categoryImg}
+                </div>
+                <div className="menu__price">Price: <span>{price}$</span></div>
                 <button className="menu__btn">Add to cart</button>
             </li>
-            <li className="menu__item">
-                <div className="menu__title">Cesar salad</div>
-                <img className="menu__img" src="https://static.1000.menu/img/content/21458/-salat-cezar-s-kr-salat-cezar-s-krevetkami-s-maionezom_1501173720_1_max.jpg" alt="Cesar salad"></img>
-                <div className="menu__category">Category: <span>salads</span></div>
-                <div className="menu__price">Price: <span>12$</span></div>
-                <button className="menu__btn">Add to cart</button>
-            </li>
-        </>
+        </Link> 
+        
     )
 }
-
 export default MenuListItem;

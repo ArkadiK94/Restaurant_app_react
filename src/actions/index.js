@@ -1,10 +1,22 @@
-const menuLoaded = (serverMenuItems)=>{
+const menuLoaded = (newMenu)=>{
     return{
-        type:'Menu_Page_Loaded',
-        itemRecived : serverMenuItems
+        type:'Menu_Loaded',
+        payload : newMenu
+    };
+};
+const menuRequest = ()=>{
+    return{
+        type:'Menu_Request'
+    };
+};
+const menuError = ()=>{
+    return{
+        type:'Menu_Error',
     };
 };
 
 export {
-    menuLoaded
+    menuLoaded,
+    menuRequest,
+    menuError
 }
