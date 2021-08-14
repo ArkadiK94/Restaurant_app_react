@@ -5,8 +5,7 @@ import {Link} from 'react-router-dom';
 
 
 const MenuListItem = ({menu}) => {
-    const {title,url,category,price} = menu;
-    const newTitle = (title.match(/\S/g)).join("").toLowerCase();
+    const {title,url,category,price,id} = menu;
     let categoryImg = <></>;
     switch(category){
         case "salads":
@@ -23,7 +22,7 @@ const MenuListItem = ({menu}) => {
     }
     return (
         
-        <Link style={{color:"black",textDecoration:"none",listStyle:"none"}} to={"/"+newTitle}>
+        <Link style={{color:"black",textDecoration:"none",listStyle:"none"}} to={"/"+id}>
             <li className="menu__item">
                 <div className="menu__title">{title}</div>
                 <img className="menu__img" src={url} alt={title}></img>

@@ -7,20 +7,10 @@ import {Error} from '../error';
 import Spinner from '../spinner';
 import './menu-list.scss';
 
-const MenuListRender =({menuItems,error,loading,onClick})=>{
-    if(error){
-        return <Error/>
-    }
-    if(loading){
-        return <Spinner/>
-    }
+const MenuListRender =({items})=>{
     return (
         <ul className="menu__list">
-            {menuItems.map(menuItem=>{
-                return (
-                    <MenuListItem key={menuItem.id} menu={menuItem} onClick={onClick}/>
-                )
-            })}
+            {items}
         </ul>
     )
     
@@ -36,7 +26,20 @@ class MenuList extends Component{
 
     }
     render(){
-        return <MenuListRender {...this.props} onClick={this.onClick}/>
+        const {menuItems,error,loading} = this.props;
+        if(error){
+            return <Error/>
+        }
+        if(loading){
+            return <Spinner/>
+        }
+        const items = menuItems.map(menuItem=>{
+            return <MenuListItem key={menuItem.id} menu={menuItem}/>
+        });
+            
+        return (
+            <MenuListRender items={items}/>
+        )
     }
 }
 
