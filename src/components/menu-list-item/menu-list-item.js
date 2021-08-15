@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 
 
-const MenuListItem = ({menu}) => {
+const MenuListItem = ({menu,onAdd}) => {
     const {title,url,category,price,id} = menu;
     let categoryImg = <></>;
     switch(category){
@@ -21,9 +21,8 @@ const MenuListItem = ({menu}) => {
             categoryImg = <></>;
     }
     return (
-        
-        <Link style={{color:"black",textDecoration:"none",listStyle:"none"}} to={"/"+id}>
-            <li className="menu__item">
+        <li className="menu__item">
+            <Link style={{color:"black",textDecoration:"none",listStyle:"none"}} to={"/"+id}>
                 <div className="menu__title">{title}</div>
                 <img className="menu__img" src={url} alt={title}></img>
                 <div className="menu__category">
@@ -31,10 +30,13 @@ const MenuListItem = ({menu}) => {
                     <br/>{categoryImg}
                 </div>
                 <div className="menu__price">Price: <span>{price}$</span></div>
-                <button className="menu__btn">Add to cart</button>
-            </li>
-        </Link> 
-        
+            </Link>
+            <button 
+                className="menu__btn"
+                onClick={()=>onAdd(id)}>
+                    Add to cart
+            </button>
+        </li>
     )
 }
 export default MenuListItem;

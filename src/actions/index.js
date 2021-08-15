@@ -14,9 +14,23 @@ const menuError = ()=>{
         type:'Menu_Error',
     };
 };
+const addToCart = (id)=>{
+    return{
+        type:'Add_To_Cart',
+        payload: id
+    };
+};
+const removeFromCart = (id)=>{
+    return{
+        type:'Remove_From_Cart',
+        payload: id
+    };
+};
 
 export {
     menuLoaded,
     menuRequest,
-    menuError
+    menuError,
+    addToCart,
+    removeFromCart
 }

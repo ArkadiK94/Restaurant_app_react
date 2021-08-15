@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import Spinner from '../spinner';
-import {menuLoaded,menuRequest,menuError} from '../../actions';
+import {menuLoaded,menuRequest,menuError,addToCart} from '../../actions';
 import WithRestoService from '../hoc';
 import {ErrorPage404} from '../error';
 
@@ -61,7 +61,7 @@ class ItemPage extends Component{
                         <br/>{categoryImg}
                     </div>
                     <div className="menu__price">Price: <span>{price}$</span></div>
-                    <button className="menu__btn">Add to cart</button>
+                    <button onClick={()=>this.props.addToCart(+id)} className="menu__btn">Add to cart</button>
                 </li>
             </ItemWrapper>
         )
@@ -78,7 +78,8 @@ const mapStateToProps = (state)=>{
 const mapDispatchToProps = {
     menuLoaded,
     menuRequest,
-    menuError
+    menuError,
+    addToCart
 }
 
 export default WithRestoService(connect(mapStateToProps,mapDispatchToProps)(ItemPage));
