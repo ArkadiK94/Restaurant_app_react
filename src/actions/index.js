@@ -20,6 +20,12 @@ const addToCart = (id)=>{
         payload: id
     };
 };
+const lowerFromCart = (id)=>{
+    return{
+        type:'Lower_From_Cart',
+        payload: id
+    };
+};
 const removeFromCart = (id)=>{
     return{
         type:'Remove_From_Cart',
@@ -32,5 +38,6 @@ export {
     menuRequest,
     menuError,
     addToCart,
-    removeFromCart
+    removeFromCart,
+    lowerFromCart
 }

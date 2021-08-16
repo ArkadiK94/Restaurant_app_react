@@ -2,10 +2,10 @@ const initialState = {
     menu: [],
     loading: false,
     error: false,
-    items:[],
-    count:0
+    items:[]
 }
 const reducer =(state= initialState, action)=>{
+    let newItem,newId,index;
     switch(action.type){
         case 'Menu_Loaded':
             return {
@@ -29,24 +29,57 @@ const reducer =(state= initialState, action)=>{
                 error: true
             };
         case 'Add_To_Cart':
-            const newItem = state.menu.find(item=>item.id===action.payload);
+            newItem = state.menu.find(item=>item.id===action.payload);
+            newId =  newItem.id;
+            index = state.items.findIndex(item=>item.id===newId);
+            if(index >-1){
+                newItem["count"] = state.items[index]["count"] +1;
+                newItem["totalPrice"] = newItem["count"]*newItem.price;
+                return {
+                    ...state,
+                    items: [
+                        ...state.items.slice(0,index),
+                        newItem,
+                        ...state.items.slice(index+1)
+                    ]
+                };
+            } else{
+                newItem["count"] = 1;
+                newItem["totalPrice"] = newItem.price;
+                return {
+                    ...state,
+                    items: [
+                        ...state.items,
+                        newItem
+                    ]
+                };
+            }
+        case "Lower_From_Cart":
+            newItem = state.menu.find(item=>item.id===action.payload);
+            newId =  newItem.id;
+            index = state.items.findIndex(item=>item.id===newId);
+            newItem["count"] = state.items[index]["count"] - 1;
+            if(newItem["count"] < 1){
+                newItem["count"] = 1;
+            }
+            newItem["totalPrice"] = newItem["count"]*newItem.price;
             return {
                 ...state,
                 items: [
-                    ...state.items,
-                    newItem
-                ],
-                count: state.count+1
+                    ...state.items.slice(0,index),
+                    newItem,
+                    ...state.items.slice(index+1)
+                ]
             };
+            
         case 'Remove_From_Cart':
-            const index = state.items.findIndex(item=>item.id===action.payload);
+            index = state.items.findIndex(item=>item.id===action.payload);
             return {
                 ...state,
                 items:[
                     ...state.items.slice(0,index),
                     ...state.items.slice(index+1)
-                ],
-                count: state.count-1
+                ]
             };
         default:
             return state;
